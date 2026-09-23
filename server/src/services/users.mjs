@@ -51,7 +51,10 @@ export async function sweepExpiredGuests() {
 	const dmIds = (await Conversation.find({ type: "dm", members: { $in: ids } }, "_id")).map(
 		(c) => c._id
 	);
-	const guestMessages = await Message.find({ senderId: { $in: ids } }, "_id parentId");
+	const guestMessages = await Message.find(
+		{ $or: [{ senderId: { $in: ids } }, { aboutUserId: { $in: ids } }] },
+		"_id parentId"
+	);
 	const guestTopLevelIds = guestMessages.filter((m) => !m.parentId).map((m) => m._id);
 	const touchedThreads = [
 		...new Set(guestMessages.filter((m) => m.parentId).map((m) => m.parentId.toString())),
@@ -60,6 +63,7 @@ export async function sweepExpiredGuests() {
 	await Message.deleteMany({
 		$or: [
 			{ senderId: { $in: ids } },
+			{ aboutUserId: { $in: ids } },
 			{ parentId: { $in: guestTopLevelIds } },
 			{ conversationId: { $in: dmIds } },
 		],
@@ -75,7 +79,7 @@ export async function sweepExpiredGuests() {
 		{ $pull: { reactions: { userIds: { $size: 0 } } } }
 	);
 
-	// Recount threads the guests replied in
+	// Recount threads the guests (or bots answering them) replied in
 	for (const parentId of touchedThreads) {
 		const replies = await Message.find({ parentId }, "senderId createdAt").sort({ createdAt: 1 });
 		await Message.updateOne(

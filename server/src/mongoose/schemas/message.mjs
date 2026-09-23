@@ -37,6 +37,8 @@ const MessageSchema = new mongoose.Schema({
 	lastReplyAt: mongoose.Schema.Types.Date,
 	replyUserIds: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 	reactions: [ReactionSchema],
+	// Bot replies and welcomes: who they were addressed to (removed with expired guests)
+	aboutUserId: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: null },
 	createdAt: {
 		type: mongoose.Schema.Types.Date,
 		default: Date.now,
@@ -46,6 +48,7 @@ const MessageSchema = new mongoose.Schema({
 MessageSchema.index({ conversationId: 1, parentId: 1, createdAt: -1 });
 MessageSchema.index({ parentId: 1, createdAt: 1 });
 MessageSchema.index({ senderId: 1 });
+MessageSchema.index({ aboutUserId: 1 }, { sparse: true });
 
 MessageSchema.methods.toPublic = function () {
 	return {

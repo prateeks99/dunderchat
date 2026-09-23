@@ -69,13 +69,13 @@ function enqueue(job) {
 async function drain() {
 	draining = true;
 	while (queue.length) {
-		const { bot, conversation, text, parentId = null, delayMs = 0 } = queue.shift();
+		const { bot, conversation, text, parentId = null, delayMs = 0, aboutUserId = null } = queue.shift();
 		try {
 			await sleep(Math.max(delayMs, lastPostAt + MIN_GAP_MS - Date.now(), 0));
 			setTyping(bot, conversation, parentId, true);
 			await sleep(Math.min(Math.max(1200 + text.length * 25, 1500), 4000));
 			setTyping(bot, conversation, parentId, false);
-			await postMessage({ conversation, sender: bot.user, text, parentId });
+			await postMessage({ conversation, sender: bot.user, text, parentId, aboutUserId });
 			lastPostAt = Date.now();
 		} catch (err) {
 			console.error("Bots: failed to post", err.message);
@@ -107,7 +107,7 @@ function handleHumanMessage({ message, conversation, sender }) {
 		const text = trigger
 			? pickLine(`${bot.persona.username}:kw:${trigger.match}`, trigger.lines)
 			: pickLine(`${bot.persona.username}:dm:${sender._id}`, bot.persona.dm);
-		enqueue({ bot, conversation, text: fill(text, sender), parentId, delayMs: 600 });
+		enqueue({ bot, conversation, text: fill(text, sender), parentId, delayMs: 600, aboutUserId: sender._id });
 		return;
 	}
 
@@ -119,7 +119,7 @@ function handleHumanMessage({ message, conversation, sender }) {
 		for (const bot of mentioned) {
 			const line = fill(pickLine(`${bot.persona.username}:mention`, bot.persona.mention), sender);
 			const text = parentId ? line : `@${sender.username} ${line}`;
-			enqueue({ bot, conversation, text, parentId, delayMs: 600 });
+			enqueue({ bot, conversation, text, parentId, delayMs: 600, aboutUserId: sender._id });
 		}
 		return;
 	}
@@ -131,7 +131,7 @@ function handleHumanMessage({ message, conversation, sender }) {
 		const bot = bots.get(persona.username);
 		if (!bot || onCooldown(bot, conversation)) continue;
 		const text = pickLine(`${persona.username}:kw:${trigger.match}`, trigger.lines);
-		enqueue({ bot, conversation, text: fill(text, sender), parentId, delayMs: 800 });
+		enqueue({ bot, conversation, text: fill(text, sender), parentId, delayMs: 800, aboutUserId: sender._id });
 		return; // at most one keyword reply per message
 	}
 }
@@ -149,6 +149,7 @@ async function welcome(human) {
 		conversation: general,
 		text: fill(pickLine("michael:welcome", michael.persona.welcome), human),
 		delayMs: 4000,
+		aboutUserId: human._id,
 	});
 	if (dwight) {
 		enqueue({
@@ -156,6 +157,7 @@ async function welcome(human) {
 			conversation: general,
 			text: fill(pickLine("dwight:welcome", dwight.persona.welcome), human),
 			delayMs: 2500,
+			aboutUserId: human._id,
 		});
 	}
 }

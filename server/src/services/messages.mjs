@@ -37,7 +37,9 @@ const threadMeta = (message) => ({
 	replyUserIds: message.replyUserIds.map(String),
 });
 
-export async function postMessage({ conversation, sender, text, parentId = null }) {
+// aboutUserId: for bot replies and welcomes, the person they're addressed to, so they can
+// be cleaned up with that person when a guest expires
+export async function postMessage({ conversation, sender, text, parentId = null, aboutUserId = null }) {
 	const body = String(text ?? "").trim().slice(0, MAX_MESSAGE_LENGTH);
 	if (!body) throw new Error("Message is empty");
 
@@ -57,6 +59,7 @@ export async function postMessage({ conversation, sender, text, parentId = null 
 		text: body,
 		mentions: await resolveMentions(body),
 		parentId: parent?._id ?? null,
+		aboutUserId,
 	});
 
 	const io = getIo();
