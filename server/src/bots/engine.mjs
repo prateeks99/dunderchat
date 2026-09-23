@@ -102,7 +102,11 @@ function handleHumanMessage({ message, conversation, sender }) {
 		const botId = conversation.members.map(String).find((id) => botsById.has(id));
 		if (!botId) return;
 		const bot = botsById.get(botId);
-		const text = pickLine(`${bot.persona.username}:dm:${sender._id}`, bot.persona.dm);
+		// Stay on topic when the human mentions one of this bot's trigger words
+		const trigger = bot.persona.keywords.find((k) => k.match.test(message.text));
+		const text = trigger
+			? pickLine(`${bot.persona.username}:kw:${trigger.match}`, trigger.lines)
+			: pickLine(`${bot.persona.username}:dm:${sender._id}`, bot.persona.dm);
 		enqueue({ bot, conversation, text: fill(text, sender), parentId, delayMs: 600 });
 		return;
 	}
