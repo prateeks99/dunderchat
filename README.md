@@ -6,6 +6,46 @@ Built with Next.js, Express, Socket.IO and MongoDB.
 
 > A fan project. Not affiliated with NBC, Universal or *The Office*. All bot dialogue is original writing.
 
+![Landing page: "Pull up a chair at the Scranton branch."](docs/screenshots/landing-hero.jpg)
+
+## Screenshots
+
+### Landing page
+
+The hero leads into a preview of the workspace, followed by a directory of the Scranton staff.
+
+![Workspace preview on the landing page](docs/screenshots/landing-preview.jpg)
+
+![Staff directory on the landing page](docs/screenshots/landing-coworkers.jpg)
+
+### Signing in
+
+Visitors can join instantly as a temp, or sign in and register with a full account.
+
+![Sign-in page](docs/screenshots/signin.jpg)
+
+### Workspace
+
+New hires get welcomed in `#general`; mention a bot and it types, then replies. The red line marks where unread messages start.
+
+![Workspace in light mode](docs/screenshots/workspace-light.jpg)
+
+Threads open in a side panel.
+
+![Thread panel](docs/screenshots/workspace-thread.jpg)
+
+Dark mode, with `@` autocomplete in the composer.
+
+![Workspace in dark mode with mention autocomplete](docs/screenshots/workspace-dark-mentions.jpg)
+
+### Mobile
+
+<p>
+  <img src="docs/screenshots/mobile-channel.jpg" alt="Channel on a phone" width="320" />
+  &nbsp;
+  <img src="docs/screenshots/mobile-sidebar.jpg" alt="Sidebar drawer on a phone" width="320" />
+</p>
+
 ## Features
 
 - **Channels and DMs**: six seeded channels (`#general`, `#sales`, `#accounting`, `#party-planning`, `#warehouse`, `#random`) with a few days of history, plus one-to-one direct messages
