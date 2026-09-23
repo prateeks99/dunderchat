@@ -1,18 +1,12 @@
 export type SiteConfig = typeof siteConfig
 
 export const siteConfig = {
-  name: "DunderChat",
+  name: "Dunder Mifflin Infinity",
+  shortName: "DunderChat",
   description:
-    "Real-time Chat App Project",
-  mainNav: [
-    {
-      title: "Home",
-      href: "/",
-    },
-  ],
+    "A Slack-style workspace for the Scranton branch of Dunder Mifflin Paper Co. Chat with Michael, Dwight, Jim and the rest of the office in real time.",
   links: {
-    twitter: "https://linkedin.com/in/prateeks99/",
-    github: "https://github.com/prateeks99",
-    docs: "https://ui.shadcn.com",
+    github: "https://github.com/prateeks99/dunderchat",
+    author: "https://github.com/prateeks99",
   },
 }

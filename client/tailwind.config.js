@@ -3,7 +3,7 @@ const { fontFamily } = require("tailwindcss/defaultTheme")
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
-  content: ["app/**/*.{ts,tsx}", "components/**/*.{ts,tsx}"],
+  content: ["app/**/*.{ts,tsx}", "components/**/*.{ts,tsx}", "lib/**/*.{ts,tsx}"],
   theme: {
     container: {
       center: true,
@@ -47,6 +47,21 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        sidebar: {
+          DEFAULT: "hsl(var(--sidebar))",
+          foreground: "hsl(var(--sidebar-foreground))",
+          muted: "hsl(var(--sidebar-muted))",
+          hover: "hsl(var(--sidebar-hover))",
+          active: "hsl(var(--sidebar-active))",
+          "active-foreground": "hsl(var(--sidebar-active-foreground))",
+          border: "hsl(var(--sidebar-border))",
+        },
+        rail: "hsl(var(--rail))",
+        mention: {
+          DEFAULT: "hsl(var(--mention))",
+          foreground: "hsl(var(--mention-foreground))",
+        },
+        highlight: "hsl(var(--highlight))",
       },
       borderRadius: {
         lg: `var(--radius)`,
@@ -65,10 +80,15 @@ module.exports = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: 0 },
         },
+        "typing-dot": {
+          "0%, 60%, 100%": { opacity: 0.25, transform: "translateY(0)" },
+          "30%": { opacity: 1, transform: "translateY(-2px)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "typing-dot": "typing-dot 1.2s infinite",
       },
     },
   },

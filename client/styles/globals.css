@@ -3,70 +3,95 @@
 @tailwind utilities;
 
 @layer base {
+  /* Light: paper-white workspace with a Dunder Mifflin navy sidebar */
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 47.4% 11.2%;
+    --background: 45 33% 98%;
+    --foreground: 222 30% 14%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 40 20% 94%;
+    --muted-foreground: 220 10% 42%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 47.4% 11.2%;
+    --popover-foreground: 222 30% 14%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
+    --border: 40 12% 87%;
+    --input: 40 12% 82%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 47.4% 11.2%;
+    --card-foreground: 222 30% 14%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 211 58% 40%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 40 20% 93%;
+    --secondary-foreground: 222 30% 14%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 211 45% 94%;
+    --accent-foreground: 211 58% 30%;
 
-    --destructive: 0 100% 50%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 72% 48%;
+    --destructive-foreground: 0 0% 100%;
 
-    --ring: 215 20.2% 65.1%;
+    --ring: 211 58% 45%;
+
+    --sidebar: 220 46% 20%;
+    --sidebar-foreground: 220 25% 82%;
+    --sidebar-muted: 220 20% 65%;
+    --sidebar-hover: 220 40% 26%;
+    --sidebar-active: 211 58% 44%;
+    --sidebar-active-foreground: 0 0% 100%;
+    --sidebar-border: 220 38% 28%;
+    --rail: 221 50% 14%;
+
+    --mention: 45 95% 88%;
+    --mention-foreground: 32 80% 28%;
+    --highlight: 45 90% 96%;
 
     --radius: 0.5rem;
   }
 
   .dark {
-    --background: 224 71% 4%;
-    --foreground: 213 31% 91%;
+    --background: 222 32% 11%;
+    --foreground: 210 25% 90%;
 
-    --muted: 223 47% 11%;
-    --muted-foreground: 215.4 16.3% 56.9%;
+    --muted: 222 26% 16%;
+    --muted-foreground: 218 14% 62%;
 
-    --accent: 216 34% 17%;
-    --accent-foreground: 210 40% 98%;
+    --popover: 222 30% 14%;
+    --popover-foreground: 210 25% 90%;
 
-    --popover: 224 71% 4%;
-    --popover-foreground: 215 20.2% 65.1%;
+    --border: 220 22% 21%;
+    --input: 220 22% 26%;
 
-    --border: 216 34% 17%;
-    --input: 216 34% 17%;
+    --card: 222 30% 14%;
+    --card-foreground: 210 25% 90%;
 
-    --card: 224 71% 4%;
-    --card-foreground: 213 31% 91%;
+    --primary: 211 70% 58%;
+    --primary-foreground: 222 40% 10%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 1.2%;
+    --secondary: 222 24% 19%;
+    --secondary-foreground: 210 25% 90%;
 
-    --secondary: 222.2 47.4% 11.2%;
-    --secondary-foreground: 210 40% 98%;
+    --accent: 214 35% 22%;
+    --accent-foreground: 211 80% 80%;
 
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 62% 52%;
+    --destructive-foreground: 0 0% 100%;
 
-    --ring: 216 34% 17%;
+    --ring: 211 70% 58%;
 
-    --radius: 0.5rem;
+    --sidebar: 223 42% 8%;
+    --sidebar-foreground: 220 20% 78%;
+    --sidebar-muted: 220 14% 55%;
+    --sidebar-hover: 222 30% 14%;
+    --sidebar-active: 211 60% 42%;
+    --sidebar-active-foreground: 0 0% 100%;
+    --sidebar-border: 222 28% 15%;
+    --rail: 224 50% 5%;
+
+    --mention: 40 60% 26%;
+    --mention-foreground: 45 90% 80%;
+    --highlight: 42 40% 15%;
   }
 }
 
@@ -74,8 +99,45 @@
   * {
     @apply border-border;
   }
+  html,
+  body {
+    @apply h-full;
+  }
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Landing page preview: messages arrive one by one, once */
+@keyframes arrive {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.arrive {
+  animation: arrive 0.45s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arrive {
+    animation: none;
+  }
+}
+
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--border)) transparent;
+  }
+  .scrollbar-sidebar {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--sidebar-border)) transparent;
   }
 }

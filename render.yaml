@@ -1,0 +1,26 @@
+# Render Blueprint for the API server (Express + Socket.IO + the Scranton bots).
+# The client deploys separately on Vercel; see README.md.
+services:
+  - type: web
+    name: dunderchat-api
+    runtime: node
+    rootDir: server
+    plan: free
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false
+      # Your Vercel URL, e.g. https://dunderchat.vercel.app (comma-separate extra origins)
+      - key: CLIENT_URL
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true
+      # Optional: leave unset to hide "Continue with GitHub"
+      - key: GITHUB_CLIENT_ID
+        sync: false
+      - key: GITHUB_CLIENT_SECRET
+        sync: false
