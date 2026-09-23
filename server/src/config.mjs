@@ -1,13 +1,20 @@
 import "dotenv/config";
 
 const isProd = process.env.NODE_ENV === "production";
-const clientUrl = (process.env.CLIENT_URL || "http://localhost:3000").replace(/\/$/, "");
+// Comma-separated; the first is the canonical site used for redirects, the rest
+// (e.g. Vercel preview URLs) are only allowed to open sockets
+const clientUrls = (process.env.CLIENT_URL || "http://localhost:3000")
+	.split(",")
+	.map((url) => url.trim().replace(/\/$/, ""))
+	.filter(Boolean);
+const clientUrl = clientUrls[0];
 
 export const config = {
 	isProd,
 	port: process.env.PORT || process.env.SERVER_PORT || 5000,
 	mongoUri: process.env.MONGODB_URI,
 	clientUrl,
+	clientUrls,
 	sessionSecret: process.env.SESSION_SECRET || (isProd ? "" : "dev-only-session-secret"),
 	// Number of proxy hops in front of the app (Render's load balancer = 1)
 	trustProxy: Number(process.env.TRUST_PROXY ?? 1),

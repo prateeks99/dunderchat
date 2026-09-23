@@ -21,7 +21,7 @@ export function createApp() {
 	// REST calls arrive through the client's /api proxy; the socket connects directly
 	const io = new Server(httpServer, {
 		cors: {
-			origin: config.clientUrl,
+			origin: config.clientUrls,
 			methods: ["GET", "POST"],
 		},
 	});
@@ -51,7 +51,7 @@ export function createApp() {
 
 	app.use(
 		cors({
-			origin: config.clientUrl,
+			origin: config.clientUrls,
 			credentials: true,
 		})
 	);
